@@ -24,7 +24,7 @@ public class Commande {
     private EtatCommande etatCommande;
     @OneToOne
     private Facture facture;
-    @OneToMany(mappedBy = "ligneCommande")
+    @OneToMany(mappedBy = "commande")
     private List<LigneCommande> produits;
     @ManyToOne
     @JoinColumn(name = "idUser")
