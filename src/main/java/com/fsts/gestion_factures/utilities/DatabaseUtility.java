@@ -37,6 +37,7 @@ public class DatabaseUtility {
                 .tel("09766534")
                 .email("zineb@gmail.com")
                 .build();
+        userRepository.save(user);
 
     }
 
