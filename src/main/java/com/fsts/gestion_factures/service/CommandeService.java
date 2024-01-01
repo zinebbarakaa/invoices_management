@@ -6,8 +6,8 @@ import com.fsts.gestion_factures.model.request.LigneCommandeRequest;
 import com.fsts.gestion_factures.model.response.CommandeResponse;
 
 public interface CommandeService extends CrudService<CommandeRequest, CommandeResponse, Commande,Long> {
-    public void addLigneCommandeToCommande(Long idCommande, LigneCommandeRequest ligneCommandeRequest) ;
-    public void confirmCommande(Long idCommande) ;
-    public Double calculateTotalAmount(Long idCommande) ;
+     void addLigneCommandeToCommande(Long idCommande, LigneCommandeRequest ligneCommandeRequest) ;
+     void confirmCommande(Long idCommande) ;
+     Double calculateTotalAmount(Long idCommande) ;
 
     }
