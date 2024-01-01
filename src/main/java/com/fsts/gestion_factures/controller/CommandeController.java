@@ -61,7 +61,7 @@ public class CommandeController {
 
     @GetMapping("/{id}/total-amount")
     public ResponseEntity<Double> calculateTotalAmount(@PathVariable Long id) {
-        Double totalAmount = commandeService.calculateTotalAmount(id);
-        return new ResponseEntity<>(totalAmount, HttpStatus.OK);
+         commandeService.updateTotalAmount(id);
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 }

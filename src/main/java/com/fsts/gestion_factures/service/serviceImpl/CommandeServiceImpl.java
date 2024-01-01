@@ -29,6 +29,7 @@ public class CommandeServiceImpl implements CommandeService {
     public CommandeResponse add(CommandeRequest request) {
         Commande nouvelleCommande = CommandeMapper.INSTANCE.requestToEntity(request);
         nouvelleCommande.setEtatCommande(EtatCommande.PENDING);
+        updateTotalAmount(nouvelleCommande.getIdCommande());
         Commande savedCommande = commandeRepository.save(nouvelleCommande);
         return CommandeMapper.INSTANCE.entityToResponse(savedCommande);
     }
@@ -82,6 +83,7 @@ public class CommandeServiceImpl implements CommandeService {
         LigneCommande nouvelleLigneCommande = LigneCommandeMapper.INSTANCE.requestToEntity(ligneCommandeRequest);
         nouvelleLigneCommande.setCommande(commande);
         commande.getProduits().add(nouvelleLigneCommande);
+        updateTotalAmount(commande.getIdCommande());
         commandeRepository.save(commande);
     }
 
@@ -96,13 +98,17 @@ public class CommandeServiceImpl implements CommandeService {
         commandeRepository.save(commande);
     }
 
-    @Override
-    public Double calculateTotalAmount(Long idCommande) {
+    @Transactional
+    public void updateTotalAmount(Long idCommande) {
         Commande commande = commandeRepository.findById(idCommande)
                 .orElseThrow(() -> new EntityNotFoundException("Commande not found with ID: " + idCommande));
 
-        return commande.getProduits().stream()
+        double totalAmount = commande.getProduits().stream()
                 .mapToDouble(ligneCommande -> ligneCommande.getProduit().getPrix() * ligneCommande.getQuantite())
                 .sum();
+
+        commande.setMontant(totalAmount);
+        commandeRepository.save(commande);
     }
+
 }
