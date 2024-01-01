@@ -1,21 +1,21 @@
 {
 	"info": {
-		"_postman_id": "ed35875a-e277-45d0-a36a-0eeb867a0094",
+		"_postman_id": "d8d21005-7db2-4bf4-bb82-c95ab5cb873b",
 		"name": "Gestion des factures Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "28657306"
+		"_exporter_id": "27778468"
 	},
 	"item": [
 		{
-			"name": "user",
+			"name": "ligneCommande",
 			"item": [
 				{
-					"name": "getAllUsers",
+					"name": "getAllLigneCommande",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/user/get-all-user",
+							"raw": "http://localhost:8080/api/v1/get-all-ligne-commande",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -24,20 +24,137 @@
 							"path": [
 								"api",
 								"v1",
-								"user",
-								"get-all-user"
+								"get-all-ligne-commande"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "getOneUser",
+					"name": "AddLigneCommande",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"idLigneCommande\": 1,\r\n//   \"commande\": {\r\n//     \"idCommande\": 101,\r\n//     \"dateCommande\": \"2024-01-01\",\r\n//     \"montant\": 150.00,\r\n//     \"etatCommande\": \"EN_COURS\",\r\n//     \"facture\": null,\r\n//     \"produits\": [],\r\n//     \"client\": {\r\n//       \"idUser\": 201,\r\n//       \"nom\": \"John\",\r\n//       \"prenom\": \"Doe\",\r\n//       \"adresse\": \"123 Street\",\r\n//       \"email\": \"john.doe@example.com\",\r\n//       \"tel\": \"123-456-7890\"\r\n//     }\r\n//   },\r\n  \"produit\": {\r\n    \"idProduit\": 301,\r\n    \"prix\": 50.00,\r\n    \"nomProduit\": \"Sample Product\",\r\n    \"description\": \"A sample product description\",\r\n    \"stockQuantite\": 100.0,\r\n    \"type\": \"Electronics\",\r\n    \"fournisseur\": {\r\n      \"idUser\": 401,\r\n      \"nom\": \"Supplier Co.\",\r\n      \"prenom\": \"Supplier\",\r\n      \"adresse\": \"456 Avenue\",\r\n      \"email\": \"supplier@example.com\",\r\n      \"tel\": \"987-654-3210\"\r\n    }\r\n  },\r\n  \"quantite\": 5\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/add-ligne-commande",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"add-ligne-commande"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_LigneCommande",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \r\n  \r\n  \"quantite\": 4\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/update-ligne-commande/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"update-ligne-commande",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOneLigneCommande",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/user/get-one/1",
+							"raw": "http://localhost:8080/api/v1/get-one/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"get-one",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Ligne commnade",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Add-User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n  \"nom\": \"Doe\",\r\n  \"prenom\": \"John\",\r\n  \"adresse\": \"123 Rue de l'Exemple\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"tel\": \"123-456-7890\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/user/add-user",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -47,8 +164,7 @@
 								"api",
 								"v1",
 								"user",
-								"get-one",
-								"1"
+								"add-user"
 							]
 						}
 					},
@@ -87,32 +203,12 @@
 					"response": []
 				},
 				{
-					"name": "DeleteUser",
+					"name": "getAllUsers",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add-User",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n\r\n  \"nom\": \"Doe\",\r\n  \"prenom\": \"John\",\r\n  \"adresse\": \"123 Rue de l'Exemple\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"tel\": \"123-456-7890\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/api/v1/user/add-user",
+							"raw": "http://localhost:8080/api/v1/user/get-all-user",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -122,7 +218,38 @@
 								"api",
 								"v1",
 								"user",
-								"add-user"
+								"get-all-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getOneUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/user/get-one/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"get-one",
+								"1"
 							]
 						}
 					},
