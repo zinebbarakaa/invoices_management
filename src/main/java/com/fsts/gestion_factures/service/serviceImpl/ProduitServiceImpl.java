@@ -23,25 +23,19 @@ public class ProduitServiceImpl implements ProduitService {
         produitRepository.save(produit);
         return ProduitMapper.INSTANCE.entityToResponse(produit);
     }
-
-
     @Override
     public List<ProduitResponse> get() {
         List<Produit> produits = produitRepository.findAll();
         return ProduitMapper.INSTANCE.listToResponseList(produits);
     }
-
     @Override
     public ProduitResponse update(ProduitRequest request, Long id) {
         Produit produit = produitRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("produit", "id", id.toString()));
-
         // Update entity
         ProduitMapper.INSTANCE.updateEntityFromRequest(request, produit);
-
         // Save changes
         produitRepository.save(produit);
-
         // Prepare and return the response
         return ProduitMapper.INSTANCE.entityToResponse(produit);
     }
