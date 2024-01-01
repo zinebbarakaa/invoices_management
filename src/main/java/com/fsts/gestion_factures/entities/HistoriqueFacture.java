@@ -2,34 +2,33 @@ package com.fsts.gestion_factures.entities;
 
 import com.fsts.gestion_factures.enums.EtatFacture;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
 @Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Facture {
+public class HistoriqueFacture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idFacture;
+    private Long idHistoriqueFacture;
+    private Long referenceFacture;
+    private Date DateModification;
     private Date dateFacture;
-    private Long reference;
     private Double montant;
     private EtatFacture etatFacture;
-    @OneToOne(mappedBy = "facture")
     private Commande commande;
-    @OneToMany(mappedBy = "facture")
     private List<Paiement> paiements;
-    @OneToMany(mappedBy = "facture")
-    private List<HistoriqueFacture> historique = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "facture_precedente_id")
+    private Facture facturePrecedente;
+    @OneToOne
+    @JoinColumn(name = "facture_id")
+    private Facture facture;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
     @Temporal(TemporalType.TIMESTAMP)
