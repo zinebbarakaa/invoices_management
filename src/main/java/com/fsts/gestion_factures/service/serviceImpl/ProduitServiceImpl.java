@@ -7,15 +7,15 @@ import com.fsts.gestion_factures.model.request.ProduitRequest;
 import com.fsts.gestion_factures.model.response.ProduitResponse;
 import com.fsts.gestion_factures.repository.ProduitRepository;
 import com.fsts.gestion_factures.service.ProduitService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
+@RequiredArgsConstructor
 public class ProduitServiceImpl implements ProduitService {
     private final ProduitRepository produitRepository;
 
-    public ProduitServiceImpl(ProduitRepository produitRepository) {
-        this.produitRepository = produitRepository;
-    }
 
     @Override
     public ProduitResponse add(ProduitRequest request) {
