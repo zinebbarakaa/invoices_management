@@ -1,7 +1,9 @@
 package com.fsts.gestion_factures.utilities;
 
+import com.fsts.gestion_factures.entities.Paiement;
 import com.fsts.gestion_factures.entities.Produit;
 import com.fsts.gestion_factures.entities.User;
+import com.fsts.gestion_factures.repository.PaiementRepository;
 import com.fsts.gestion_factures.repository.ProduitRepository;
 import com.fsts.gestion_factures.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +19,13 @@ public class DatabaseUtility {
 
     private final UserRepository userRepository;
      private final ProduitRepository produitRepository;
+     private final PaiementRepository paiementRepository;
 
     public void initDatabase() {
         Logger.getLogger("Database utility").info("Seeding database ...");
         initUser();
         initProduits();
+        initPaiement();
         Logger.getLogger("Database utility").info("Database seeding complete");
     }
 
@@ -66,6 +70,29 @@ public class DatabaseUtility {
                 .fournisseur(fournisseur)
                 .build();
         produitRepository.save(produit);
+
+    }
+public void initPaiement() {
+
+//        Check table is empty
+        if (paiementRepository.count() > 0) return;
+        paiementRepository.deleteAll();
+
+        User proprietaire = User.builder()
+                .nom("Doe")
+                .prenom("John")
+                .adresse("123 Rue de l'Exemple")
+                .email("john.doe@example.com")
+                .tel("123-456-7890").build();
+        userRepository.save(proprietaire);
+
+    Paiement paiement = Paiement.builder()
+            .idPaiement(1L)
+            .numCheque("1111")
+            .montant(500.00)
+            .client(proprietaire)
+            .build();
+    paiementRepository.save(paiement);
 
     }
 

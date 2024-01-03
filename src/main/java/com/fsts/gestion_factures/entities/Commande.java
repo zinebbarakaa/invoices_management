@@ -29,9 +29,6 @@ public class Commande {
     @ManyToOne
     @JoinColumn(name = "idUser")
     private User client;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+
 
 }

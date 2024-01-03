@@ -1,5 +1,7 @@
 package com.fsts.gestion_factures.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fsts.gestion_factures.enums.EtatFacture;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,17 +23,13 @@ public class Facture {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idFacture;
     private Date dateFacture;
-    private Long reference;
     private Double montant;
     private EtatFacture etatFacture;
     @OneToOne(mappedBy = "facture")
     private Commande commande;
-    @OneToMany(mappedBy = "facture")
+    @OneToMany(mappedBy = "facture", fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Paiement> paiements;
-    @OneToMany(mappedBy = "facture")
+    @OneToMany(mappedBy = "facturePrecedente", fetch = FetchType.EAGER)
     private List<HistoriqueFacture> historique = new ArrayList<>();
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
 }

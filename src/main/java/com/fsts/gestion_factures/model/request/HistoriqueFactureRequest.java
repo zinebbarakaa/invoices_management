@@ -18,6 +18,5 @@ public class HistoriqueFactureRequest {
     private Date dateFacture;
     private Double montant;
     private EtatFacture etatFacture;
-    private Commande commande;
-    private List<Paiement> paiements;
+   private Long factureRequest;
 }

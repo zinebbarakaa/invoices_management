@@ -21,16 +21,14 @@ public class HistoriqueFacture {
     private Date dateFacture;
     private Double montant;
     private EtatFacture etatFacture;
-    private Commande commande;
-    private List<Paiement> paiements;
     @ManyToOne
     @JoinColumn(name = "facture_precedente_id")
     private Facture facturePrecedente;
-    @OneToOne
-    @JoinColumn(name = "facture_id")
-    private Facture facture;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+//    @OneToOne
+//    @JoinColumn(name = "facture_id")
+//    private Facture facture;
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date updatedAt;
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date createdAt;
 }

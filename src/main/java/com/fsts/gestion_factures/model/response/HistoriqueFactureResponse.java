@@ -3,6 +3,7 @@ package com.fsts.gestion_factures.model.response;
 import com.fsts.gestion_factures.entities.Commande;
 import com.fsts.gestion_factures.entities.Paiement;
 import com.fsts.gestion_factures.enums.EtatFacture;
+import com.fsts.gestion_factures.model.request.FactureRequest;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,6 +19,6 @@ public class HistoriqueFactureResponse {
     private Date dateFacture;
     private Double montant;
     private EtatFacture etatFacture;
-    private Commande commande;
-    private List<Paiement> paiements;
+    private Long factureRequest;
+
 }
