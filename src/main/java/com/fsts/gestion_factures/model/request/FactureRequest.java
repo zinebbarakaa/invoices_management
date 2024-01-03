@@ -1,10 +1,13 @@
 package com.fsts.gestion_factures.model.request;
 
 import com.fsts.gestion_factures.entities.Commande;
+import com.fsts.gestion_factures.entities.HistoriqueFacture;
 import com.fsts.gestion_factures.entities.Paiement;
 import com.fsts.gestion_factures.enums.EtatFacture;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +24,7 @@ public class FactureRequest {
     private Date dateFacture;
     private Double montant;
     private EtatFacture etatFacture;
-    private Commande commande;
-    private List<Paiement> paiements;
+    private CommandeRequest commande;
+    private List<PaiementRequest> paiements;
+    private List<HistoriqueFactureRequest> historiqueFactures;
 }

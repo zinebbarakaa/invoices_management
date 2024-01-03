@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -25,5 +26,8 @@ public class Produit {
     @ManyToOne
     @JoinColumn(name ="idUser")
     private User fournisseur;
-
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 }

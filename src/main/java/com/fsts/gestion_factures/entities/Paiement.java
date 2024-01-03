@@ -1,5 +1,6 @@
 package com.fsts.gestion_factures.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,8 +26,8 @@ public class Paiement {
     private String proprietaireCheque;
     @ManyToOne
     @JoinColumn(name = "idFacture")
+    @JsonBackReference
     private Facture facture;
-
     @ManyToOne
     @JoinColumn(name = "idUser")
     private User client;
