@@ -2,6 +2,7 @@ package com.fsts.gestion_factures.service.serviceImpl;
 
 import com.fsts.gestion_factures.entities.Commande;
 import com.fsts.gestion_factures.entities.LigneCommande;
+import com.fsts.gestion_factures.entities.Produit;
 import com.fsts.gestion_factures.enums.EtatCommande;
 import com.fsts.gestion_factures.exceptions.InvalidInputException;
 import com.fsts.gestion_factures.mappers.CommandeMapper;
@@ -10,26 +11,33 @@ import com.fsts.gestion_factures.model.request.CommandeRequest;
 import com.fsts.gestion_factures.model.request.LigneCommandeRequest;
 import com.fsts.gestion_factures.model.response.CommandeResponse;
 import com.fsts.gestion_factures.repository.CommandeRepository;
+import com.fsts.gestion_factures.repository.LigneCommandeRepository;
+import com.fsts.gestion_factures.repository.ProduitRepository;
 import com.fsts.gestion_factures.service.CommandeService;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CommandeServiceImpl implements CommandeService {
     private final CommandeRepository commandeRepository;
+    private final LigneCommandeRepository ligneCommandeRepository;
+    private final ProduitRepository produitRepository;
+
     @Override
     @Transactional
     public CommandeResponse add(CommandeRequest request) {
         Commande nouvelleCommande = CommandeMapper.INSTANCE.requestToEntity(request);
         nouvelleCommande.setEtatCommande(EtatCommande.PENDING);
-        updateTotalAmount(nouvelleCommande.getIdCommande());
         Commande savedCommande = commandeRepository.save(nouvelleCommande);
         return CommandeMapper.INSTANCE.entityToResponse(savedCommande);
     }
@@ -69,21 +77,28 @@ public class CommandeServiceImpl implements CommandeService {
     }
 
     @Override
-    public void addLigneCommandeToCommande(Long idCommande, LigneCommandeRequest ligneCommandeRequest) {
+    public void addLignesCommandeToCommande(Long idCommande, List<LigneCommandeRequest> lignesCommandeRequestList) {
         Commande commande = commandeRepository.findById(idCommande)
                 .orElseThrow(() -> new EntityNotFoundException("Commande not found with ID: " + idCommande));
-
         if (commande.getEtatCommande() != EtatCommande.PENDING) {
             throw new IllegalStateException("La commande ne peut pas recevoir de nouvelles lignes de commande car elle n'est pas en attente.");
         }
 
-        if (ligneCommandeRequest.getQuantite() <= 0) {
-            throw new InvalidInputException("La quantité du produit doit être supérieure à zéro.");
+        for (LigneCommandeRequest ligneCommandeRequest : lignesCommandeRequestList) {
+
+            if (ligneCommandeRequest.getQuantite() <= 0) {
+                throw new InvalidInputException("La quantité du produit doit être supérieure à zéro.");
+            }
+            Produit produit= produitRepository.findById(ligneCommandeRequest.getProduit().getIdProduit()).orElseThrow(
+                    ()->  new EntityNotFoundException("product not found exception"));
+
+            LigneCommande nouvelleLigneCommande = LigneCommandeMapper.INSTANCE.requestToEntity(ligneCommandeRequest);
+            nouvelleLigneCommande.setCommande(commande);
+            nouvelleLigneCommande.setProduit(produit);
+            commande.getProduits().add(nouvelleLigneCommande);
         }
-        LigneCommande nouvelleLigneCommande = LigneCommandeMapper.INSTANCE.requestToEntity(ligneCommandeRequest);
-        nouvelleLigneCommande.setCommande(commande);
-        commande.getProduits().add(nouvelleLigneCommande);
-        updateTotalAmount(commande.getIdCommande());
+
+        commande.setMontant(getTotalAmount(commande.getIdCommande()));
         commandeRepository.save(commande);
     }
 
@@ -98,17 +113,19 @@ public class CommandeServiceImpl implements CommandeService {
         commandeRepository.save(commande);
     }
 
+
     @Transactional
-    public void updateTotalAmount(Long idCommande) {
+    public double getTotalAmount(Long idCommande) {
         Commande commande = commandeRepository.findById(idCommande)
                 .orElseThrow(() -> new EntityNotFoundException("Commande not found with ID: " + idCommande));
 
         double totalAmount = commande.getProduits().stream()
-                .mapToDouble(ligneCommande -> ligneCommande.getProduit().getPrix() * ligneCommande.getQuantite())
+                .mapToDouble(ligneCommande -> {
+            Produit produit = ligneCommande.getProduit();
+            return produit != null ? produit.getPrix() * ligneCommande.getQuantite() : 0.0;
+        })
                 .sum();
-
-        commande.setMontant(totalAmount);
-        commandeRepository.save(commande);
+        return totalAmount;
     }
 
 }

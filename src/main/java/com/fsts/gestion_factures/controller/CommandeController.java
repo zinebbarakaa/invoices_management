@@ -48,10 +48,11 @@ public class CommandeController {
     }
 
     @PostMapping("/{id}/add-lignes-commande")
-    public ResponseEntity<Void> addLigneCommandeToCommande(@PathVariable Long id, @RequestBody LigneCommandeRequest ligneCommandeRequest) {
-        commandeService.addLigneCommandeToCommande(id, ligneCommandeRequest);
+    public ResponseEntity<Void> addLignesCommandeToCommande(@PathVariable Long id, @RequestBody List<LigneCommandeRequest> lignesCommandeRequestList) {
+        commandeService.addLignesCommandeToCommande(id, lignesCommandeRequestList);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
 
     @PostMapping("/{id}/confirm")
     public ResponseEntity<Void> confirmCommande(@PathVariable Long id) {
@@ -61,7 +62,7 @@ public class CommandeController {
 
     @GetMapping("/{id}/total-amount")
     public ResponseEntity<Double> calculateTotalAmount(@PathVariable Long id) {
-         commandeService.updateTotalAmount(id);
-        return new ResponseEntity<>( HttpStatus.OK);
+        double totalAmount = commandeService.getTotalAmount(id);
+        return new ResponseEntity<>(totalAmount, HttpStatus.OK);
     }
 }

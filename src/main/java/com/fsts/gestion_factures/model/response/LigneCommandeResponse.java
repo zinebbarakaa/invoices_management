@@ -12,4 +12,5 @@ public class LigneCommandeResponse {
     private Commande commande;
     private Produit produit;
     private int quantite;
+    private int idCommande;
 }

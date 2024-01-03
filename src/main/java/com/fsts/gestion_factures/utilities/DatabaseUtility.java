@@ -1,11 +1,16 @@
 package com.fsts.gestion_factures.utilities;
 
+import com.fsts.gestion_factures.entities.Commande;
 import com.fsts.gestion_factures.entities.Produit;
 import com.fsts.gestion_factures.entities.User;
+import com.fsts.gestion_factures.enums.EtatCommande;
+import com.fsts.gestion_factures.repository.CommandeRepository;
 import com.fsts.gestion_factures.repository.ProduitRepository;
 import com.fsts.gestion_factures.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 import java.util.logging.Logger;
 
 @Component
@@ -17,6 +22,7 @@ public class DatabaseUtility {
 
     private final UserRepository userRepository;
      private final ProduitRepository produitRepository;
+     private final CommandeRepository commandeRepository;
 
     public void initDatabase() {
         Logger.getLogger("Database utility").info("Seeding database ...");
@@ -41,9 +47,24 @@ public class DatabaseUtility {
                 .tel("09766534")
                 .email("zineb@gmail.com")
                 .build();
-        userRepository.save(user);
+        User savedUser =userRepository.save(user);
+            initCommande(savedUser);
+    }
+    public void initCommande(User user) {
 
-    } public void initProduits() {
+//        Check table is empty
+        if (commandeRepository.count() > 0) return;
+        commandeRepository.deleteAll();
+        Commande commande = Commande.builder()
+                .idCommande(1L)
+                .etatCommande(EtatCommande.PENDING)
+                .dateCommande(new Date())
+                .client(user)
+                .build();
+        commandeRepository.save(commande);
+
+    }
+    public void initProduits() {
 
 //        Check table is empty
         if (produitRepository.count() > 0) return;

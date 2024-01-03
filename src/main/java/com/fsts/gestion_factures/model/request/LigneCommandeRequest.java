@@ -11,7 +11,6 @@ public class LigneCommandeRequest {
 
     private Long idLigneCommande;
     private Commande commande;
-
     private Produit produit;
     private int quantite;
 }

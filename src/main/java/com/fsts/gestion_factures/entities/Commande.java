@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,8 +25,8 @@ public class Commande {
     private EtatCommande etatCommande;
     @OneToOne
     private Facture facture;
-    @OneToMany(mappedBy = "commande")
-    private List<LigneCommande> produits;
+    @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LigneCommande> produits= new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "idUser")
     private User client;
